@@ -42,8 +42,6 @@ if ($user->is_logged_in()) {
 				$message = '<p class="error">Wrong username or password</p>';
 			}
 		} //end if submit
-
-
 		?>
 
 
