@@ -5,37 +5,47 @@
 <head>
 	<meta charset="utf-8">
 	<title>Blog</title>
-	<link rel="stylesheet" href="style/normalize.css">
-	<link rel="stylesheet" href="style/main.css">
+	<link rel="stylesheet" href="style/bootstrap.css">
 </head>
 
 <body>
+	<?php include './includes/navbar.php'; ?>
 
-	<div id="wrapper">
-		<h1>Blog</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<?php
+				try {
 
-		<a href="/admin/login.php">Dashboard</a>
+					$stmt = $db->query('SELECT postID, postTitle, postDesc, postDate FROM blog_posts ORDER BY postID DESC');
+					while ($row = $stmt->fetch()) {
 
-		<hr />
 
-		<?php
-		try {
+						?>
+				<div class="card mb-5">
+					<div class="card-header">
+						<a href="viewpost.php?id=<?php echo $row['postID']; ?>">
+							<?php echo $row['postTitle']; ?>
+						</a>
+					</div>
+					<div class="card-body">
+						<p>
+							<?php echo $row['postDesc']; ?>
+						</p>
+					</div>
+					<div class="card-footer">
+						Posted on: <?php echo date('jS M Y H:i:s', strtotime($row['postDate'])); ?>
+					</div>
+				</div>
 
-			$stmt = $db->query('SELECT postID, postTitle, postDesc, postDate FROM blog_posts ORDER BY postID DESC');
-			while ($row = $stmt->fetch()) {
-
-				echo '<div>';
-				echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . $row['postTitle'] . '</a></h1>';
-				echo '<p>Posted on ' . date('jS M Y H:i:s', strtotime($row['postDate'])) . '</p>';
-				echo '<p>' . $row['postDesc'] . '</p>';
-				echo '<p><a href="viewpost.php?id=' . $row['postID'] . '">Read More</a></p>';
-				echo '</div>';
-			}
-		} catch (PDOException $e) {
-			echo $e->getMessage();
-		}
-		?>
-
+				<?php
+					}
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+				}
+				?>
+			</div>
+		</div>
 	</div>
 
 
